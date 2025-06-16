@@ -1,76 +1,85 @@
 # Talia AI Daemon
 
-Um daemon Python que utiliza o modelo Gaia (CEIA-UFG/Gemma-3-Gaia-PT-BR-4b-it) para resumir textos em português, expondo um servidor gRPC sobre Unix Domain Socket (UDS).
+A daemon service for text classification and summarization using the Gaia model and DistilBERT for Portuguese text.
 
-## Requisitos
+## Features
 
-- Python 3.8+
-- pip (gerenciador de pacotes Python)
+- Text summarization using the Gaia model
+- Text classification using DistilBERT
+- gRPC server over Unix Domain Socket
+- Health check endpoint
+- Environment-based configuration
 
-## Instalação
+## Project Structure
 
-1. Clone o repositório:
-   ```bash
-   git clone https://github.com/seu-usuario/talia-ai-daemon.git
-   cd talia-ai-daemon
-   ```
+```
+talia-ai-daemon/
+├── src/
+│   ├── __init__.py
+│   ├── talia_daemon.py
+│   ├── client.py
+│   └── proto/
+│       ├── talia.proto
+│       ├── talia_pb2.py
+│       └── talia_pb2_grpc.py
+├── tests/
+│   └── test_talia_daemon.py
+├── requirements.txt
+├── setup.py
+├── .gitignore
+└── README.md
+```
 
-2. Instale as dependências:
-   ```bash
-   pip install -r requirements.txt
-   ```
+## Installation
 
-## Configuração
+1. Clone the repository:
+```bash
+git clone https://github.com/Talia-Project/ai-daemon.git
+cd talia-ai-daemon
+```
 
-O daemon utiliza variáveis de ambiente para configuração. Você pode definir o caminho do socket gRPC através de um arquivo `.env` ou `talia_daemon.env`. Por exemplo:
+2. Create and activate a virtual environment:
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
 
+3. Install the package:
+```bash
+pip install -e .
+```
+
+## Configuration
+
+Create a `.env` file with the following variables:
 ```
 SOCKET_PATH=/tmp/daemon.sock
 ```
 
-Se não for definido, o padrão é `/tmp/daemon.sock`.
+## Usage
 
-## Uso
-
-### Iniciar o Daemon
-
-Para iniciar o daemon:
+1. Start the daemon:
 ```bash
-python talia_daemon.py
+python -m src.talia_daemon
 ```
 
-O daemon irá:
-- Carregar o modelo Gaia
-- Iniciar o servidor gRPC sobre UDS no caminho configurado
-- Registrar logs em `talia_daemon.log`
-
-### Testar o Daemon
-
-Para testar o daemon, você pode usar o cliente gRPC fornecido. Certifique-se de que o daemon esteja rodando e execute:
-
+2. Run the client example:
 ```bash
-python client.py
+python -m src.client
 ```
 
-O cliente irá:
-- Verificar a saúde do daemon
-- Enviar uma solicitação de resumo e exibir o resultado
+## Development
 
-## Testes
-
-Os testes são escritos usando pytest. Para executar os testes:
-
+1. Install development dependencies:
 ```bash
-pytest test_talia_daemon.py
+pip install -e ".[dev]"
 ```
 
-## Logs
+2. Run tests:
+```bash
+pytest tests/
+```
 
-Os logs são salvos em `talia_daemon.log` e também são exibidos no console.
+## License
 
-## Personalização
-
-Para modificar o comportamento do daemon, edite o arquivo `talia_daemon.py`:
-- Altere o intervalo de processamento modificando o valor em `time.sleep()`
-- Modifique o texto de exemplo na função `run()`
-- Ajuste o nível de logging conforme necessário 
+MIT License 
