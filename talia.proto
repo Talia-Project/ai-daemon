@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package talia;
+
+service TaliaService {
+    rpc Summarize (SummarizeRequest) returns (SummarizeResponse) {}
+    rpc Classify (ClassifyRequest) returns (ClassifyResponse) {}
+    rpc HealthCheck (HealthCheckRequest) returns (HealthCheckResponse) {}
+}
+
+message SummarizeRequest {
+    string text = 1;
+}
+
+message SummarizeResponse {
+    string summary = 1;
+    bool success = 2;
+    string error_message = 3;
+}
+
+message ClassifyRequest {
+    string text = 1;
+    repeated string possible_classes = 2;
+}
+
+message ClassifyResponse {
+    string predicted_class = 1;
+    float confidence = 2;
+    bool success = 3;
+    string error_message = 4;
+}
+
+message HealthCheckRequest {}
+
+message HealthCheckResponse {
+    bool healthy = 1;
+    string status = 2;
+} 
